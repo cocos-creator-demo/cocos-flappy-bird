@@ -1,7 +1,28 @@
 # Cocos_flappy_bird
 使用cocos creator制作的flappy bird，该文档整理相关开发笔记
 
-## Animation
+## 为什么选择flappy bird
+
+这个游戏玩法简单，但是包含的内容比较丰富，基本上能涉猎到大部分知识点，入门的不二选择~
+
+加上之前用jQuery也写过一个简陋版的，所以选择实现flappy bird作为cocos creator的入门项目。
+
+## 使用
+
+### 屏幕适配
+
+只需要修改canvas根节点的尺寸即可
+
+### 坐标系统
+
+在游戏中常常需要修改节点的坐标位置。cocos中的节点位置由两个因素决定：
+
+* cocos世界坐标系
+* 节点自身锚点
+
+
+
+### Animation
 
 制作小鸟飞行的逐帧动画，参考
 
@@ -17,3 +38,39 @@
 * 在节点的用户脚本组件中，可通过`this.getComponent(cc.Animation)`,设置动画的相关属性（比如`wrapMode`、`repeatCount`等）
 
 需要注意的是在动画编辑器编辑后的动画，需要保存之后才会在模拟器的节点上生效（这里由于没保存导致预览和模拟器动画效果不一致，自己把自己坑了一把~）
+
+### Action
+
+动作模块用来实现节点常见的动作需求，比如移动位置、旋转等，常常搭配游戏逻辑进行处理，cocos creator的动作系统与cocos2d-js基本一致，可以参考
+
+* [在 Cocos Creator 中使用动作系统](http://docs.cocos.com/creator/manual/zh/scripting/actions.html)
+* [动作API列表](http://docs.cocos.com/creator/manual/zh/scripting/action-list.html)
+
+使用方式也很简单，先声明一个（或一系列）动作，然后调用`node.runAction`接口
+
+```Js
+this.isFlying = true
+
+let node = this.node;
+node.rotation = this.flyRotation;
+
+let jumpAction = cc.sequence(
+    cc.moveBy(this.jumpDuration, cc.p(0, this.jumpHeight)),
+    cc.callFunc(function(target) {
+    	this.isFlying = false;
+    }, this)
+);
+node.runAction(jumpAction);
+```
+
+需要注意的是动作回调通过`callFunc`注册，并将其放置在动作序列中，这种做法与前端中比较熟悉的事件回调处理有一点差异
+
+PS：虽然API调用十分简单，但是要调试出一个流畅的动作序列真的是蛋疼啊~感觉没天赋
+
+## 思考
+
+### 组件的意义
+
+前端意义的组件指的是封装好的、可公用的模块。同理，cocos也是这样。
+
+比如flappy bird中滚动的背景，需要两张背景图实现无缝切换，而实际上他们的运动逻辑都是同理的，即在每帧中减少节点的x位置，当完全移出屏幕左侧时右将其重置到屏幕右侧。此时将运动逻辑封装成脚本组件，然后两个节点都使用该组件即可。

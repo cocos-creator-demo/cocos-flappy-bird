@@ -9,37 +9,69 @@
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
 
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
-    properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
-    },
+  properties: {
+    flyRotation: -20,
+    jumpDuration: 0.2,
+    jumpHeight: 50,
+    dropSpeed: 2
+  },
 
-    // LIFE-CYCLE CALLBACKS:
+  // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        var anim = this.getComponent(cc.Animation);
-        var animState = anim.play("fly");
-        animState.wrapMode = cc.WrapMode.Loop;
-    },
+  onLoad() {
+    var anim = this.getComponent(cc.Animation);
+    if (anim) {
+      var animState = anim.play("fly");
+      animState.wrapMode = cc.WrapMode.Loop;
+    }
 
-    start () {
+    this.setInputControl();
+  },
+  setInputControl() {
+    cc.eventManager.addListener(
+      {
+        event: cc.EventListener.KEYBOARD,
+        onKeyPressed: (keyCode, event) => {
+          switch (keyCode) {
+            case cc.KEY.space:
+              this.fly();
+              break;
+          }
+        }
+      },
+      this.node
+    );
+  },
+  fly() {
+    this.isFlying = true
 
-    },
+    let node = this.node;
+    node.rotation = this.flyRotation;
 
-    // update (dt) {},
+    let jumpAction = cc.sequence(
+        cc.moveBy(this.jumpDuration, cc.p(0, this.jumpHeight)),
+        cc.callFunc(function(target) {
+            this.isFlying = false;
+        }, this)
+    );
+    node.runAction(jumpAction);
+  },
+  drop() {
+    let node = this.node;
+    node.rotation = -this.flyRotation;
+    
+    let dropAction = cc.moveBy(this.jumpDuration, cc.p(0, -this.dropSpeed));
+    node.runAction(dropAction);
+    
+  },
+
+  start() {},
+
+  update (dt) {
+    if (!this.isFlying){
+        this.drop();
+    }
+  },
 });
