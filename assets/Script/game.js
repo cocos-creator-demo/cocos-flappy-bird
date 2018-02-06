@@ -12,33 +12,32 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-       speed: 5,
-       isStop: false
+        player: {
+            default: null,
+            type: cc.Node
+        },
+        pipeGroup: {
+            default: null,
+            type: cc.Node
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
-
-    start () {
+    onLoad() {
+        this.player.init(this)
 
     },
-    stop(){
-        this.isStop = true
+
+    start() {
     },
 
-    update (dt) {
-        if (this.isStop){
-            return 
-        }
+    update(dt) {
 
-        let node = this.node;
-        node.x -= this.speed;
-        // 防止滚动出现缝隙
-        let diff = 10,
-            screenWidth = 640
-        if (node.x <= -screenWidth + diff) {
-          node.x = screenWidth;
-        }
     },
+
+    gameOver() {
+        this.player.stopAllActions();
+        console.log('game over')
+    }
 });

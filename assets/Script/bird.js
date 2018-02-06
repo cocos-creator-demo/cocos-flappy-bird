@@ -9,69 +9,97 @@
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
 
 cc.Class({
-  extends: cc.Component,
+    extends: cc.Component,
 
-  properties: {
-    flyRotation: -20,
-    jumpDuration: 0.2,
-    jumpHeight: 50,
-    dropSpeed: 2
-  },
+    properties: {
+        flyRotation: -20,
+        jumpDuration: 0.2,
+        jumpHeight: 50,
+        dropSpeed: 2
+    },
 
-  // LIFE-CYCLE CALLBACKS:
-
-  onLoad() {
-    var anim = this.getComponent(cc.Animation);
-    if (anim) {
-      var animState = anim.play("fly");
-      animState.wrapMode = cc.WrapMode.Loop;
-    }
-
-    this.setInputControl();
-  },
-  setInputControl() {
-    cc.eventManager.addListener(
-      {
-        event: cc.EventListener.KEYBOARD,
-        onKeyPressed: (keyCode, event) => {
-          switch (keyCode) {
-            case cc.KEY.space:
-              this.fly();
-              break;
-          }
+    // LIFE-CYCLE CALLBACKS:
+    init(game){
+        this.game = game
+    },
+    onLoad() {
+        var anim = this.getComponent(cc.Animation);
+        if (anim) {
+            var animState = anim.play("fly");
+            animState.wrapMode = cc.WrapMode.Loop;
         }
-      },
-      this.node
-    );
-  },
-  fly() {
-    this.isFlying = true
 
-    let node = this.node;
-    node.rotation = this.flyRotation;
+        this.setInputControl();
+    },
+    setInputControl() {
+        cc.eventManager.addListener(
+            {
+                event: cc.EventListener.KEYBOARD,
+                onKeyPressed: (keyCode, event) => {
+                    switch (keyCode) {
+                        case cc.KEY.space:
+                            this.fly();
+                            break;
+                    }
+                }
+            },
+            this.node
+        );
+    },
+    fly() {
+        this.isFlying = true
 
-    let jumpAction = cc.sequence(
-        cc.moveBy(this.jumpDuration, cc.p(0, this.jumpHeight)),
-        cc.callFunc(function(target) {
-            this.isFlying = false;
-        }, this)
-    );
-    node.runAction(jumpAction);
-  },
-  drop() {
-    let node = this.node;
-    node.rotation = -this.flyRotation;
-    
-    let dropAction = cc.moveBy(this.jumpDuration, cc.p(0, -this.dropSpeed));
-    node.runAction(dropAction);
-    
-  },
+        let node = this.node;
+        node.rotation = this.flyRotation;
 
-  start() {},
+        let jumpAction = cc.sequence(
+            cc.moveBy(this.jumpDuration, cc.p(0, this.jumpHeight)),
+            cc.callFunc(function (target) {
+                this.isFlying = false;
+            }, this)
+        );
+        node.runAction(jumpAction);
+    },
+    drop() {
+        let node = this.node;
+        node.rotation = -this.flyRotation;
 
-  update (dt) {
-    if (!this.isFlying){
-        this.drop();
-    }
-  },
+        let dropAction = cc.moveBy(this.jumpDuration, cc.p(0, -this.dropSpeed));
+        node.runAction(dropAction);
+
+    },
+    checkCollision() {
+        let game = this.game,
+            node = this.node;
+        
+        function checkTopCollision() {
+            // 
+        }
+
+        function checkBottomCollision() {
+            
+        }
+
+        if (game) {
+            let pipeGroup = game.pipeGroup,
+                player = this.node
+
+            // 基于坐标的简单碰撞检测
+            if (Math.abs(player.x - pipeGroup.x) < pipeGroup.topPipe.width) {
+                let isCollision = false
+
+                return isCollision;
+            }
+        }
+    },
+
+    start() {
+
+    },
+
+    update(dt) {
+        if (!this.isFlying) {
+            this.drop();
+        }
+    },
 });
