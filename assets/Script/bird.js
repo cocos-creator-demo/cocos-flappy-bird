@@ -8,6 +8,13 @@
 //  - [Chinese] http://www.cocos.com/docs/creator/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/editors_and_tools/creator-chapters/scripting/life-cycle-callbacks/index.html
 
+const State = {
+    READY: 0,
+    FLY: 1,
+    DROP: 2,
+    DIE: -1
+}
+
 cc.Class({
     extends: cc.Component,
 
@@ -15,22 +22,25 @@ cc.Class({
         flyRotation: -20,
         jumpDuration: 0.2,
         jumpHeight: 50,
-        dropSpeed: 2
+        dropSpeed: 2,
+        state: State.READY
     },
 
-    // LIFE-CYCLE CALLBACKS:
     init(game){
         this.game = game
     },
-    onLoad() {
-        var anim = this.getComponent(cc.Animation);
-        if (anim) {
-            var animState = anim.play("fly");
-            animState.wrapMode = cc.WrapMode.Loop;
-        }
 
-        this.setInputControl();
+    onLoad() {
+        let anim = this.getComponent(cc.Animation)
+        if (anim) {
+            this.anim = anim
+            let animState = anim.play("fly")
+            animState.wrapMode = cc.WrapMode.Loop
+        }
+        this.setInputControl()
+        this.getNextPipeGroup()
     },
+
     setInputControl() {
         cc.eventManager.addListener(
             {
@@ -47,7 +57,7 @@ cc.Class({
         );
     },
     fly() {
-        this.isFlying = true
+        this.state = State.FLY
 
         let node = this.node;
         node.rotation = this.flyRotation;
@@ -55,7 +65,7 @@ cc.Class({
         let jumpAction = cc.sequence(
             cc.moveBy(this.jumpDuration, cc.p(0, this.jumpHeight)),
             cc.callFunc(function (target) {
-                this.isFlying = false;
+                this.state = State.DROP
             }, this)
         );
         node.runAction(jumpAction);
@@ -68,38 +78,55 @@ cc.Class({
         node.runAction(dropAction);
 
     },
+    getNextPipeGroup(){
+        let next = this.game.pipeManager.getNext()
+        console.log(next)
+        this.nextPipe = next.getComponent('pipeGroup')
+    },
     checkCollision() {
         let game = this.game,
-            node = this.node;
-        
-        function checkTopCollision() {
-            // 
+            player = this.node,
+            pipeGroup = this.nextPipe
+
+        function _checkCollision(node) {
+            return cc.rectIntersectsRect(
+                player.getBoundingBoxToWorld(),
+                node.getBoundingBoxToWorld());
         }
 
-        function checkBottomCollision() {
-            
-        }
+        // 简单矩形碰撞检测
+        let isCollision =  _checkCollision(pipeGroup.topPipe) ||
+            _checkCollision(pipeGroup.bottomPipe)
 
-        if (game) {
-            let pipeGroup = game.pipeGroup,
-                player = this.node
-
-            // 基于坐标的简单碰撞检测
-            if (Math.abs(player.x - pipeGroup.x) < pipeGroup.topPipe.width) {
-                let isCollision = false
-
-                return isCollision;
+        if(isCollision){
+            this.die()
+        }else {
+            // todo 判断是否通过穿过管道
+            let birdLeft = this.node.x;
+            let pipeRight = pipeGroup.node.x + pipeGroup.topPipe.width
+            let crossPipe = birdLeft > pipeRight;
+            if(crossPipe) {
+                this.getNextPipeGroup()
+                game.addScore()
             }
         }
     },
+    die(){
+        this.anim.stop();
+        this.game.gameOver()
 
-    start() {
-
+        this.state = State.DIE
     },
 
     update(dt) {
-        if (!this.isFlying) {
+        if (this.state === State.DIE){
+            return
+        }
+
+        if (this.state === State.DROP) {
             this.drop();
         }
+
+        this.checkCollision()
     },
 });

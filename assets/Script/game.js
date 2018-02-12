@@ -16,28 +16,40 @@ cc.Class({
             default: null,
             type: cc.Node
         },
-        pipeGroup: {
+        pipeLayer: {
             default: null,
             type: cc.Node
-        }
+        },
+        bg: {
+            default: null,
+            type: cc.Node
+        },
+        scoreLabel: {
+            default: null,
+            type: cc.Label
+        },
+        score: 0
     },
 
-    // LIFE-CYCLE CALLBACKS:
-
     onLoad() {
-        this.player.init(this)
+        this.pipeManager = this.pipeLayer.getComponent('pipeManager')
 
+        let bird = this.player.getComponent('bird')
+        bird.init(this)
     },
 
     start() {
     },
 
-    update(dt) {
+    update(dt) {},
 
+    addScore(){
+        this.score += 1
+        this.scoreLabel.string = this.score
     },
 
     gameOver() {
-        this.player.stopAllActions();
-        console.log('game over')
+        this.bg.getComponent('bg').stop()
+        this.pipeManager.stop()
     }
 });

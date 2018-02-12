@@ -16,23 +16,18 @@ cc.Class({
         bottomPipe: cc.Node,
         speed: 10,
         space: 250, // 缝隙宽度
-        pipeHeight: 480
+        pipeHeight: 480,
+        isStop: false
 
     },
 
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad() {
-        this.initPos()
+    stop(){
+        // this.isStop = true
     },
-
-    start() {
-
-    },
-    initPos() {
+    init(pipeManager){
+        this.pipeManager = pipeManager
         this._initPosX()
         this._initPosY()
-
     },
     _initPosX(){
         let width = cc.winSize.width;
@@ -45,18 +40,23 @@ cc.Class({
         let {pipeHeight, space} = this;
 
         let spaceOffset = cc.random0To1()*space
-        this.topPipe.y = pipeHeight + spaceOffset
+        // this.topPipe.y = pipeHeight + spaceOffset
+        // this.bottomPipe.y = -pipeHeight -(space - spaceOffset)
 
-        this.bottomPipe.y = -pipeHeight -(space - spaceOffset)
+        this.topPipe.y = 600
+        this.bottomPipe.y = -600
     },
 
     update(dt) {
+        if (this.isStop){
+            return
+        }
+
         this.node.x -= this.speed * dt;
 
         let width = cc.winSize.width
-        if (this.node.x < -width/2) {
-            // todo recycle
-            this.initPos()
+        if (this.node.x < -width) {
+            this.pipeManager.recyclePipe(this)
         }
     }
 });

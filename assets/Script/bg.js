@@ -12,33 +12,31 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-       speed: 5,
-       isStop: false
+        speed: -300,
+        resetX: -300,
+        isStop: false
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {},
 
-    start () {
+    start() {
 
     },
-    stop(){
+    stop() {
         this.isStop = true
     },
 
-    update (dt) {
-        if (this.isStop){
-            return 
+    update(dt) {
+        if (this.isStop) {
+            return
         }
 
-        let node = this.node;
-        node.x -= this.speed;
-        // 防止滚动出现缝隙
-        let diff = 10,
-            screenWidth = 640
-        if (node.x <= -screenWidth + diff) {
-          node.x = screenWidth;
+        this.node.x += this.speed * dt;
+
+        if (this.node.x <= this.resetX) {
+            this.node.x -= this.resetX;
         }
     },
 });
