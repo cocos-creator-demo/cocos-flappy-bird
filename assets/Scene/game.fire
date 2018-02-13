@@ -256,7 +256,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 320,
+      "x": 0,
       "y": 0
     },
     "_skewX": 0,
@@ -336,7 +336,8 @@
     },
     "speed": -300,
     "space": 400,
-    "pipeArr": []
+    "pipeArr": [],
+    "isStop": false
   },
   {
     "__type__": "cc.Node",
@@ -386,8 +387,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -44,
-      "y": -33
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -452,7 +453,8 @@
     "jumpDuration": 0.2,
     "jumpHeight": 100,
     "dropSpeed": 5,
-    "state": 0
+    "state": 0,
+    "count": 1
   },
   {
     "__type__": "cc.Node",

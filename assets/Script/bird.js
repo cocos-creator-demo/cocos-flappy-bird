@@ -23,7 +23,7 @@ cc.Class({
         jumpDuration: 0.2,
         jumpHeight: 50,
         dropSpeed: 2,
-        state: State.READY
+        state: State.READY,
     },
 
     init(game){
@@ -31,14 +31,17 @@ cc.Class({
     },
 
     onLoad() {
-        let anim = this.getComponent(cc.Animation)
-        if (anim) {
-            this.anim = anim
-            let animState = anim.play("fly")
-            animState.wrapMode = cc.WrapMode.Loop
-        }
+        this.setAnim()
         this.setInputControl()
+
         this.getNextPipeGroup()
+    },
+
+    setAnim(){
+        let anim = this.getComponent(cc.Animation)
+        this.anim = anim
+        let animState = anim.play("fly")
+        animState.wrapMode = cc.WrapMode.Loop
     },
 
     setInputControl() {
@@ -80,7 +83,6 @@ cc.Class({
     },
     getNextPipeGroup(){
         let next = this.game.pipeManager.getNext()
-        console.log(next)
         this.nextPipe = next.getComponent('pipeGroup')
     },
     checkCollision() {
@@ -88,23 +90,24 @@ cc.Class({
             player = this.node,
             pipeGroup = this.nextPipe
 
+        // 简单矩形碰撞检测
+        let self = this
         function _checkCollision(node) {
+
             return cc.rectIntersectsRect(
                 player.getBoundingBoxToWorld(),
                 node.getBoundingBoxToWorld());
         }
 
-        // 简单矩形碰撞检测
         let isCollision =  _checkCollision(pipeGroup.topPipe) ||
             _checkCollision(pipeGroup.bottomPipe)
 
         if(isCollision){
             this.die()
         }else {
-            // todo 判断是否通过穿过管道
-            let birdLeft = this.node.x;
+            let birdLeft = this.node.x - this.node.width / 2
             let pipeRight = pipeGroup.node.x + pipeGroup.topPipe.width
-            let crossPipe = birdLeft > pipeRight;
+            let crossPipe = birdLeft > pipeRight
             if(crossPipe) {
                 this.getNextPipeGroup()
                 game.addScore()
@@ -112,10 +115,10 @@ cc.Class({
         }
     },
     die(){
+        this.state = State.DIE
+
         this.anim.stop();
         this.game.gameOver()
-
-        this.state = State.DIE
     },
 
     update(dt) {

@@ -17,25 +17,29 @@ module.exports = cc.Class({
         speed: -300, // 管子移动速度
         space: 400, // 管道距离
         pipeArr: [],
+        isStop: false
     },
-    onLoad(){
+    onLoad() {
         this.pipeArr = []
         this.startCreate()
     },
     getNext() {
         return this.pipeArr.shift();
     },
-    startCreate(){
+    startCreate() {
         this._createPipe();
         let spawnInterval = Math.abs(this.space / this.speed);
         this.schedule(this._createPipe, spawnInterval);
     },
     // 从对象池取出管道
     _createPipe() {
+        if (this.isStop){
+            return
+        }
         let pipeGroup = null;
         if (cc.pool.hasObject(PipeGroup)) {
             pipeGroup = cc.pool.getFromPool(PipeGroup);
-        }else {
+        } else {
             pipeGroup = cc.instantiate(this.pipePrefab)
         }
 
@@ -47,18 +51,18 @@ module.exports = cc.Class({
     },
 
     // 超出屏幕，回收管道
-    recyclePipe(pipe){
+    recyclePipe(pipe) {
         pipe.node.destroy();
         // pipe.node.removeFromParent();
         // pipe.node.active = false;
         // cc.pool.putInPool(pipe);
     },
 
-    start() {
-
-    },
-    stop(){
-
+    stop() {
+        this.isStop = true
+        this.pipeArr.forEach(item => {
+            item.getComponent('pipeGroup').stop()
+        })
     },
 
 });

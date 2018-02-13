@@ -22,7 +22,7 @@ cc.Class({
     },
 
     stop(){
-        // this.isStop = true
+        this.isStop = true
     },
     init(pipeManager){
         this.pipeManager = pipeManager
@@ -52,7 +52,7 @@ cc.Class({
             return
         }
 
-        this.node.x -= this.speed * dt;
+        this.node.x -= this.speed * dt
 
         let width = cc.winSize.width
         if (this.node.x < -width) {
