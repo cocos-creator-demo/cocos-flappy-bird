@@ -9,7 +9,7 @@
   "type": "Texture Packer",
   "subMetas": {
     "bird_bg.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "93cd1bdf-dd6f-41f2-a834-7fb4277c9d44",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -31,7 +31,7 @@
       "subMetas": {}
     },
     "bird_gameover.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "12d34af7-36b9-456f-b01f-9355c68afb62",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -53,7 +53,7 @@
       "subMetas": {}
     },
     "bird_hero1.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "c0000252-fab3-4d8b-a665-263e492ec439",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -75,7 +75,7 @@
       "subMetas": {}
     },
     "bird_hero2.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "0805bcc7-aad7-49f0-86ba-4b34f353371b",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -97,7 +97,7 @@
       "subMetas": {}
     },
     "bird_hero3.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "04b98853-2950-4cbb-bf54-d505e2b24a37",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -119,7 +119,7 @@
       "subMetas": {}
     },
     "bird_logo.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "97f3a4dc-a89f-4245-a128-03f2c5d385e3",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -141,7 +141,7 @@
       "subMetas": {}
     },
     "bird_start_btn.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "1eae68b2-3ff2-47f7-a934-f4861c3cadde",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -163,7 +163,7 @@
       "subMetas": {}
     },
     "blank.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "e070b90d-457c-4634-aeb6-84ab143f7240",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -185,7 +185,7 @@
       "subMetas": {}
     },
     "brid_start_btn_pressed.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b9d3f5fa-dac3-45ae-9429-74f241c92e6c",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -207,7 +207,7 @@
       "subMetas": {}
     },
     "obstacle_down.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "bdb2f294-5ddc-4da0-a4d3-d2f69257641d",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",
@@ -229,7 +229,7 @@
       "subMetas": {}
     },
     "obstacle_up.png": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b8f5b052-b011-4216-a877-29ec4c84fc4d",
       "rawTextureUuid": "db426ea9-9b25-4df5-ad1f-f1dfe2fc2ffc",
       "trimType": "auto",

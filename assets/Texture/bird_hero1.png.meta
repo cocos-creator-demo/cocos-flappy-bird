@@ -1,12 +1,18 @@
 {
-  "ver": "1.0.0",
+  "ver": "2.3.5",
   "uuid": "1ed69ce8-1b92-4a68-8c2e-f3dbeb4fbbc9",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 34,
+  "height": 24,
+  "platformSettings": {},
   "subMetas": {
     "bird_hero1": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "d9493dc5-7b9d-4522-9aa4-e608db3719f7",
       "rawTextureUuid": "1ed69ce8-1b92-4a68-8c2e-f3dbeb4fbbc9",
       "trimType": "auto",
